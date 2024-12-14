@@ -1,15 +1,13 @@
 using System;
+using MovieCatalog.Models;
 
-namespace MovieCatalog.Models  // Asegúrate de que el namespace sea el correcto para tu proyecto
+public class User
 {
-    public class User
-    {
-        public int Id { get; set; }              // Clave primaria (identificador único)
-        public string Name { get; set; }         // Nombre del usuario
-        public string Email { get; set; }        // Correo electrónico del usuario
-        public string Password { get; set; }     // Contraseña del usuario
-        public DateTime DateJoined { get; set; } // Fecha en que se unió el usuario a la aplicación
+    public int UserId { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 
-        // Puedes agregar más propiedades si es necesario
-    }
+    // Propiedad de navegación para la relación con UserMovie
+    public ICollection<UserMovie> UserMovies { get; set; }
 }
