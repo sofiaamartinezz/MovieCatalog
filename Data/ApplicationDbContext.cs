@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using MovieCatalog.Models;  // Asegúrate de que el namespace sea correcto
+using MovieCatalog.Models;  // Revisa el namespace
+using MovieCatalog.Identity;
 
 namespace MovieCatalog.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<MyUser> Users { get; set; }
         public DbSet<Movie> Movies { get; set; }
-        public DbSet<UserMovie> UserMovies { get; set; }  // Agregar el DbSet para UserMovie
+        public DbSet<UserMovie> UserMovies { get; set; }
 
-        // Constructor con DbContextOptions
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -19,9 +19,8 @@ namespace MovieCatalog.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configurar la relación muchos a muchos entre User y Movie
             modelBuilder.Entity<UserMovie>()
-                .HasKey(um => new { um.UserId, um.MovieId });  // La clave primaria es la combinación de UserId y MovieId
+                .HasKey(um => new { um.UserId, um.MovieId });
 
             modelBuilder.Entity<UserMovie>()
                 .HasOne(um => um.User)

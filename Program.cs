@@ -1,5 +1,8 @@
 using MovieCatalog.Data; 
+using MovieCatalog.Models;
 using Microsoft.EntityFrameworkCore;
+using MovieCatalog.Identity;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +13,19 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<MyIdentityDBContext>(o => 
+    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services
+    .AddIdentity<MyUser,MyRol>()
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<MyIdentityDBContext>();
+
+
+
 
 var app = builder.Build();
 
+//Middleware
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -32,4 +45,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+//
 app.Run();

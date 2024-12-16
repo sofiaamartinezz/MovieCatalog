@@ -1,11 +1,13 @@
-using System;
-using MovieCatalog.Models;
+using MovieCatalog.Identity;
 
-public class UserMovie
+namespace MovieCatalog.Models
 {
-    public int UserId { get; set; }
-    public User User { get; set; }  // Relación con el modelo User
+    public class UserMovie
+    {
+        public string? UserId { get; set; }
+        public MyUser? User { get; set; }
 
-    public int MovieId { get; set; }
-    public Movie Movie { get; set; }  // Relación con el modelo Movie
+        public int MovieId { get; set; }
+        public Movie? Movie { get; set; }
+    }
 }
