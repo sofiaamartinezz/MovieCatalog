@@ -16,7 +16,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<MyIdentityDBContext>(o => 
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
-    .AddIdentity<MyUser,MyRol>()
+    .AddIdentity<MyUser,MyRol>(
+        options =>{
+                //Password
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+
+                //Require Email Confirmation
+                options.SignIn.RequireConfirmedEmail = false;
+
+                //Lockout
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+        }
+    )
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<MyIdentityDBContext>();
 

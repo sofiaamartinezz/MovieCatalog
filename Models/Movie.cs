@@ -1,5 +1,7 @@
 using System;
 using MovieCatalog.Models;
+
+namespace MovieCatalog.Models;
 public class Movie
 {
     public int MovieId { get; set; }

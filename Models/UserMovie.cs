@@ -1,4 +1,4 @@
-using MovieCatalog.Identity;
+using MovieCatalog.Data;
 
 namespace MovieCatalog.Models
 {

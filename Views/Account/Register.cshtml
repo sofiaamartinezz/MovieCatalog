@@ -1,0 +1,30 @@
+@model MovieCatalog.Models.RegisterDTO
+@namespace MovieCatalog.Views.Account
+@{
+    ViewData["Title"] = "Register";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<h2>Register</h2>
+
+<form asp-action="Register" asp-controller="Account" asp-route-returnUrl="@returnUrl" method="post">
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Verify Password</label>
+        <input asp-for="Password2" type="password" class="form-control" />
+        <span asp-validation-for="Password2" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>

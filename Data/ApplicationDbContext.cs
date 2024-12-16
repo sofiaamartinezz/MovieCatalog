@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MovieCatalog.Models;  // Revisa el namespace
-using MovieCatalog.Identity;
 
 namespace MovieCatalog.Data
 {

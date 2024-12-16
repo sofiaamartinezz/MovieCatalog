@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieCatalog.Data;
 
 #nullable disable
 
-namespace MovieCatalog.Migrations
+namespace MovieCatalog.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241216104838_InitialCreate")]
-    partial class InitialCreate
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace MovieCatalog.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Movie", b =>
+            modelBuilder.Entity("MovieCatalog.Models.Movie", b =>
                 {
                     b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
@@ -50,7 +47,7 @@ namespace MovieCatalog.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("MovieCatalog.Identity.MyUser", b =>
+            modelBuilder.Entity("MovieCatalog.Models.MyUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -125,13 +122,13 @@ namespace MovieCatalog.Migrations
 
             modelBuilder.Entity("MovieCatalog.Models.UserMovie", b =>
                 {
-                    b.HasOne("Movie", "Movie")
+                    b.HasOne("MovieCatalog.Models.Movie", "Movie")
                         .WithMany("UserMovies")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieCatalog.Identity.MyUser", "User")
+                    b.HasOne("MovieCatalog.Models.MyUser", "User")
                         .WithMany("UserMovies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -142,12 +139,12 @@ namespace MovieCatalog.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Movie", b =>
+            modelBuilder.Entity("MovieCatalog.Models.Movie", b =>
                 {
                     b.Navigation("UserMovies");
                 });
 
-            modelBuilder.Entity("MovieCatalog.Identity.MyUser", b =>
+            modelBuilder.Entity("MovieCatalog.Models.MyUser", b =>
                 {
                     b.Navigation("UserMovies");
                 });

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using MovieCatalog.Models;
 
-namespace MovieCatalog.Identity
+namespace MovieCatalog.Models
 {
     public class MyUser : IdentityUser
     {
