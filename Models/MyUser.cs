@@ -8,6 +8,6 @@ namespace MovieCatalog.Models
         // Propiedades adicionales para el dominio
         public string? FullName { get; set; }
         public DateTime CreationDate { get; set; }
-        public ICollection<UserMovie>? UserMovies { get; set; }  // Relación con UserMovie
+        public ICollection<UserMovie> UserMovies { get; set; } = new List<UserMovie>(); // Relación con UserMovie
     }
 }

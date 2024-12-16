@@ -1,7 +1,6 @@
 using MovieCatalog.Data; 
 using MovieCatalog.Models;
 using Microsoft.EntityFrameworkCore;
-using MovieCatalog.Identity;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -12,9 +11,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddDbContext<MyIdentityDBContext>(o => 
-    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services
     .AddIdentity<MyUser,MyRol>(
         options =>{
@@ -34,7 +30,7 @@ builder.Services
         }
     )
     .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<MyIdentityDBContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 

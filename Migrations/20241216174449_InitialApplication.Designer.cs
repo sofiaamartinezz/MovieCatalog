@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MovieCatalog.Identity;
+using MovieCatalog.Data;
 
 #nullable disable
 
 namespace MovieCatalog.Migrations
 {
-    [DbContext(typeof(MyIdentityDBContext))]
-    [Migration("20241216150527_InitialIdentity")]
-    partial class InitialIdentity
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20241216174449_InitialApplication")]
+    partial class InitialApplication
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,6 +131,31 @@ namespace MovieCatalog.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MovieCatalog.Models.Movie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Director")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Genre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MovieId");
+
+                    b.ToTable("Movies");
+                });
+
             modelBuilder.Entity("MovieCatalog.Models.MyRol", b =>
                 {
                     b.Property<string>("Id")
@@ -235,6 +260,21 @@ namespace MovieCatalog.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MovieCatalog.Models.UserMovie", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("UserMovies");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("MovieCatalog.Models.MyRol", null)
@@ -284,6 +324,35 @@ namespace MovieCatalog.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MovieCatalog.Models.UserMovie", b =>
+                {
+                    b.HasOne("MovieCatalog.Models.Movie", "Movie")
+                        .WithMany("UserMovies")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieCatalog.Models.MyUser", "User")
+                        .WithMany("UserMovies")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieCatalog.Models.Movie", b =>
+                {
+                    b.Navigation("UserMovies");
+                });
+
+            modelBuilder.Entity("MovieCatalog.Models.MyUser", b =>
+                {
+                    b.Navigation("UserMovies");
                 });
 #pragma warning restore 612, 618
         }

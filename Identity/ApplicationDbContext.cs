@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using MovieCatalog.Models;  // Revisa el namespace
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using MovieCatalog.Models;
 
 namespace MovieCatalog.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<MyUser, MyRol, string>
     {
-        public DbSet<MyUser> Users { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<UserMovie> UserMovies { get; set; }
 
@@ -18,12 +18,13 @@ namespace MovieCatalog.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configurar la relación entre UserMovie y Movie
             modelBuilder.Entity<UserMovie>()
                 .HasKey(um => new { um.UserId, um.MovieId });
 
             modelBuilder.Entity<UserMovie>()
                 .HasOne(um => um.User)
-                .WithMany(u => u.UserMovies)
+                .WithMany(m => m.UserMovies)
                 .HasForeignKey(um => um.UserId);
 
             modelBuilder.Entity<UserMovie>()
