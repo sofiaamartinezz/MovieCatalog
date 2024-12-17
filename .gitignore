@@ -1,2 +1,36 @@
+# Archivos de configuración sensibles
 appsettings.json
+appsettings.Development.json
 info.txt
+
+# Archivos de usuario
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Archivos de compilación
+bin/
+obj/
+out/
+
+# Dependencias
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Logs y temporales
+*.log
+*.tlog
+*.dmp
+
+# Claves y certificados
+*.key
+*.pfx
+
+# Azure
+.publishsettings
+azure-pipelines.yml
