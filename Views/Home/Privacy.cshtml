@@ -1,6 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
-<h1>@ViewData["Title"]</h1>
+﻿@model IEnumerable<MovieCatalog.Models.Movie>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<h2>Movies List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Director</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Genre</td>
+            <td>@item.Director</td>
+            <td>@item.Rating</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MovieId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.MovieId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Add New Movie</a>
