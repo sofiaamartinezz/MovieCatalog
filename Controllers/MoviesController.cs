@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,8 +23,29 @@ namespace MovieCatalog.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movies.ToListAsync());
+            // Verificar si el usuario está autenticado
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account"); // Redirigir al login si no está autenticado
+            }
+
+            // Obtener el ID del usuario logueado
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Obtener solo las películas asociadas al usuario logueado
+            var movies = await _context.UserMovies
+                .Where(um => um.UserId == userId)
+                .Select(um => um.Movie)
+                .ToListAsync();
+
+            return View(movies);
         }
+
+
 
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -43,6 +65,7 @@ namespace MovieCatalog.Controllers
             return View(movie);
         }
 
+
         // GET: Movies/Create
         public IActionResult Create()
         {
@@ -52,6 +75,7 @@ namespace MovieCatalog.Controllers
         // POST: Movies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Movies/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieId,Title,Genre,Director,Rating")] Movie movie)
@@ -60,6 +84,19 @@ namespace MovieCatalog.Controllers
             {
                 _context.Add(movie);
                 await _context.SaveChangesAsync();
+
+                // Asociar la película con el usuario actual (loggeado)
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Obtener el ID del usuario logueado
+
+                var userMovie = new UserMovie
+                {
+                    UserId = userId,
+                    MovieId = movie.MovieId
+                };
+
+                _context.UserMovies.Add(userMovie);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
@@ -142,12 +179,18 @@ namespace MovieCatalog.Controllers
             var movie = await _context.Movies.FindAsync(id);
             if (movie != null)
             {
+                // Eliminar las relaciones en UserMovies
+                var userMovies = _context.UserMovies.Where(um => um.MovieId == id);
+                _context.UserMovies.RemoveRange(userMovies);
+                
+                // Eliminar la película
                 _context.Movies.Remove(movie);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool MovieExists(int id)
         {

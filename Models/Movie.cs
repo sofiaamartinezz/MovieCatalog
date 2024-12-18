@@ -15,6 +15,6 @@ public class Movie
     public double? Rating { get; set; }
 
     // Propiedad de navegación para la relación con UserMovie
-    public ICollection<UserMovie>? UserMovies { get; set; }
+    public ICollection<UserMovie> UserMovies { get; set; } = new List<UserMovie>();
 }
 

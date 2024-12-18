@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieCatalog.Models;
@@ -26,9 +27,17 @@ public class HomeController : Controller
     [Authorize]
     public IActionResult Privacy()
     {
-        var movies = _context.Movies.ToList(); //Obtain the movies list
-        return View(movies); //send it to the view
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtener el ID del usuario logueado
+
+        // Obtener solo las películas asociadas al usuario actual
+        var movies = _context.UserMovies
+            .Where(um => um.UserId == userId)
+            .Select(um => um.Movie)
+            .ToList();
+
+        return View(movies); // Enviar las películas asociadas al usuario a la vista
     }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
