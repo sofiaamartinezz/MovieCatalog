@@ -26,9 +26,11 @@ namespace MovieCatalog.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            if (model.Password != model.Password2)
+            // Verificar si el correo ya existe en la base de datos
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
             {
-                ModelState.AddModelError(string.Empty, "Passwords don't match.");
+                ModelState.AddModelError("Email", "The email is already in use.");
                 return View(model);
             }
 
@@ -51,6 +53,18 @@ namespace MovieCatalog.Controllers
             }
 
             return View(model);
+        }
+
+        // Método auxiliar para validar la contraseña
+        private bool IsPasswordValid(string password)
+        {
+            if (password.Length < 8) return false;
+
+            bool hasUpperCase = password.Any(char.IsUpper);
+            bool hasNumber = password.Any(char.IsDigit);
+            bool hasSpecialChar = password.Any(ch => !char.IsLetterOrDigit(ch));
+
+            return hasUpperCase && hasNumber && hasSpecialChar;
         }
     }
 }

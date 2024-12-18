@@ -70,10 +70,11 @@ Additional for Extra Credit:
 - Certain pages are accessible only to logged-in users.
 - Connect the web app to a Microsoft Azure SQL database, where both user data and movie-related information are stored.
 - Publicate the web app in Microsoft Azure
-- Implementing all CRUD operations for full data management (scaffolding?)
+- Implementing all CRUD operations for full data management (with scaffolding)
 
 
 ## Future tasks
-1. Integrating Kaggle data in the database
-2. AI algorithm
-3. Enhanced appearance of the web application (CSS + HTML)
+1. Swager UI
+2. Integrating Kaggle data in the database
+3. AI algorithm
+4. Enhanced appearance of the web application (CSS + HTML)
