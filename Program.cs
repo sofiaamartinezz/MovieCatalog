@@ -38,14 +38,6 @@ builder.Services
 
 var app = builder.Build();
 
-// Initialize data base
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    // Cargar datos iniciales
-    SeedData.Initialize(context);
-}
-
 //Middleware
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
