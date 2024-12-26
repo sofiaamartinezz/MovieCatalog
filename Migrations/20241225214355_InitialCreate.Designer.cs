@@ -12,8 +12,8 @@ using MovieCatalog.Data;
 namespace MovieCatalog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241218140824_UpdateRatingToInt")]
-    partial class UpdateRatingToInt
+    [Migration("20241225214355_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

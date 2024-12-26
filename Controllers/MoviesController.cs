@@ -4,14 +4,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MovieCatalog.Data;
 using MovieCatalog.Models;
 
 namespace MovieCatalog.Controllers
 {
-    public class MoviesController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class MoviesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -20,177 +21,113 @@ namespace MovieCatalog.Controllers
             _context = context;
         }
 
-        // GET: Movies
+        // GET: api/movies
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Verificar si el usuario está autenticado
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account"); // Redirigir al login si no está autenticado
-            }
-
-            // Obtener el ID del usuario logueado
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
-                return RedirectToAction("Login", "Account");
+                return Unauthorized("User is not authenticated");
             }
 
-            // Obtener solo las películas asociadas al usuario logueado
             var movies = await _context.UserMovies
                 .Where(um => um.UserId == userId)
                 .Select(um => um.Movie)
                 .ToListAsync();
 
-            return View(movies);
+            return Ok(movies);
         }
 
-
-
-        // GET: Movies/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/movies/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.MovieId == id);
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return Ok(movie);
         }
 
-
-        // GET: Movies/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        // POST: Movies/Create
+        // POST: api/movies
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieId,Title,Genre,Director,Rating")] Movie movie)
+        public async Task<IActionResult> Create([FromBody] Movie movie)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-
-                // Asociar la película con el usuario actual (loggeado)
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  // Obtener el ID del usuario logueado
-
-                var userMovie = new UserMovie
-                {
-                    UserId = userId,
-                    MovieId = movie.MovieId
-                };
-
-                _context.UserMovies.Add(userMovie);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            return View(movie);
+
+            _context.Add(movie);
+            await _context.SaveChangesAsync();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userMovie = new UserMovie
+            {
+                UserId = userId,
+                MovieId = movie.MovieId
+            };
+
+            _context.UserMovies.Add(userMovie);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Details), new { id = movie.MovieId }, movie);
         }
 
-        // GET: Movies/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-            return View(movie);
-        }
-
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovieId,Title,Genre,Director,Rating")] Movie movie)
+        // PUT: api/movies/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(int id, [FromBody] Movie movie)
         {
             if (id != movie.MovieId)
             {
-                return NotFound();
+                return BadRequest("Movie ID mismatch");
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.MovieId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            return View(movie);
+
+            try
+            {
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Movies/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // DELETE: api/movies/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.MovieId == id);
+            var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
-        }
-
-        // POST: Movies/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie != null)
-            {
-                // Eliminar las relaciones en UserMovies
-                var userMovies = _context.UserMovies.Where(um => um.MovieId == id);
-                _context.UserMovies.RemoveRange(userMovies);
-                
-                // Eliminar la película
-                _context.Movies.Remove(movie);
-            }
+            var userMovies = _context.UserMovies.Where(um => um.MovieId == id);
+            _context.UserMovies.RemoveRange(userMovies);
+            _context.Movies.Remove(movie);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
-
 
         private bool MovieExists(int id)
         {
