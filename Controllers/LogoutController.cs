@@ -3,28 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using MovieCatalog.Models;
 using System.Threading.Tasks;
 
-namespace MovieCatalog.Controllers
+namespace MovieCatalog.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class LogoutController : ControllerBase
 {
-    // This controller is responsible for handling user logout actions.  
-    public class LogoutController : Controller
+    private readonly SignInManager<MyUser> _signInManager;
+
+    // Constructor: Injects the SignInManager, which manages user authentication actions.
+    public LogoutController(SignInManager<MyUser> signInManager)
     {
-        private readonly SignInManager<MyUser> _signInManager;
+        _signInManager = signInManager;
+    }
 
-        // Constructor to inject the SignInManager, which is used to manage user authentication actions.
-        public LogoutController(SignInManager<MyUser> signInManager)
-        {
-            _signInManager = signInManager;
-        }
+    // POST: api/logout
+    // Logs out the currently authenticated user and ends their session.
+    [HttpPost]
+    public async Task<IActionResult> Index()
+    {
+        // Signs the user out of their current session.
+        await _signInManager.SignOutAsync();
 
-        // Handles the logout action when triggered via a POST request.
-        [HttpPost]
-        public async Task<IActionResult> Index()
-        {
-            // Signs the user out of the current session.
-            await _signInManager.SignOutAsync();
-
-            // Redirects the user to the home page after logging out.
-            return RedirectToAction("Index", "Home");
-        }
+        // Returns a confirmation message after logging out.
+        return Ok(new { Message = "User has been logged out successfully." });
     }
 }
