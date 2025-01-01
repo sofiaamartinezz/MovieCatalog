@@ -26,6 +26,10 @@ public class LogoutController : ControllerBase
         await _signInManager.SignOutAsync();
 
         // Returns a confirmation message after logging out.
-        return Ok(new { Message = "User has been logged out successfully." });
+         return RedirectToAction("Index", "Home");
     }
 }
+
+
+
+
