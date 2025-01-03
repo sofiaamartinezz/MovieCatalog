@@ -86,19 +86,17 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HSTS value is 30 días. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-} 
-else
-{
-    // Activar Swagger solo en desarrollo
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieCatalog API v1");
-        c.RoutePrefix = "swagger"; // URL base para Swagger UI
-    });
 }
+
+// Activar Swagger en todos los entornos (desarrollo y producción)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MovieMate API v1");
+    c.RoutePrefix = "swagger"; // URL base para Swagger UI
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
