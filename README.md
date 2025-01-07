@@ -34,7 +34,11 @@ Information Systems Project
 Here are a few screenshots showing the interface of the web application:
 
 1. **Home Page**  
+
     ![Home Page](images/landing_page.png)  
+
+    ![Home Page](images/landing_page_auth.png)  
+
 
 2. **Login Screen**  
     ![Login Screen](images/login_page.png)  
@@ -43,14 +47,10 @@ Here are a few screenshots showing the interface of the web application:
     ![Register Screen](images/register_page.png) 
 
 3. **Movie List Screen**  
-    ![Movie List Screen](images/img_3.png)  
+    ![Movie List Screen](images/movies_list.png)  
 
 4. **Movie Detail Page**  
-    ![Movie Detail Page](images/img_4.png)  
-
-5. **Swagger UI - API Documentation**  
-    ![Swagger UI](images/img_5.png)  
-
+    ![Movie Detail Page](images/details_page.png)  
 ---
 
 ## Database Schema  
