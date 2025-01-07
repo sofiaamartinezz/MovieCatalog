@@ -9,7 +9,8 @@
     <form asp-controller="Logout" asp-action="Index" method="post" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-controller="Account" asp-action="Manage" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <!-- Solo muestra el nombre de usuario, sin enlace -->
+                Hello @UserManager.GetUserName(User)!
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
