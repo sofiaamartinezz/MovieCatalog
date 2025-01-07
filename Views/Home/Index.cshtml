@@ -8,7 +8,14 @@
         <div class="container">
             <h1 class="display-3 mb-4">Welcome to Movie Catalog</h1>
             <p class="lead mb-4">Track, rate, and share your movie experiences all in one place</p>
-            <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Get Started</button>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Movies/Index'">Go to My Movies</button>
+            }
+            else
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Get Started</button>
+            }
         </div>
     </div>
 
@@ -50,8 +57,15 @@
         <div class="container">
             <h2 class="mb-4">Ready to Start Your Movie Journey?</h2>
             <p class="lead mb-4">Join our community of movie lovers today and start tracking your favorite films.</p>
-            <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Create Account</button>
-            <p class="text-muted mt-3">Already have an account? <a href="/Account/Login">Log in</a></p>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Movies/Index'">Go to My Movies</button>
+            }
+            else
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Create Account</button>
+                <p class="text-muted mt-3">Already have an account? <a href="/Account/Login">Log in</a></p>
+            }
         </div>
     </div>
 
