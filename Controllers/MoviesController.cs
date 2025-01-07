@@ -167,6 +167,7 @@ namespace MovieCatalog.Controllers
         }
 
         // GET: Movies/Delete/5
+        // Shows a confirmation page for deleting a movie.
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -175,21 +176,9 @@ namespace MovieCatalog.Controllers
                 return NotFound();
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.MovieId == id);
-                
+            // Look for the movie in the database.
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
             if (movie == null)
-            {
-                return NotFound();
-            }
-
-            // Verify the user has access to this movie
-            var hasAccess = await _context.UserMovies
-                .AnyAsync(um => um.MovieId == id && um.UserId == userId);
-                
-            if (!hasAccess)
             {
                 return NotFound();
             }
@@ -198,60 +187,31 @@ namespace MovieCatalog.Controllers
         }
 
         // POST: Movies/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // Handles the form submission for deleting a movie.
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            // Find the movie by its ID.
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie != null)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return RedirectToAction("Login", "Account");
-                }
+                // Remove the associations in UserMovies.
+                var userMovies = _context.UserMovies.Where(um => um.MovieId == id);
+                _context.UserMovies.RemoveRange(userMovies);
 
-                // First, verify the movie exists and the user has access to it
-                var userMovie = await _context.UserMovies
-                    .FirstOrDefaultAsync(um => um.MovieId == id && um.UserId == userId);
-
-                if (userMovie == null)
-                {
-                    TempData["Error"] = "Movie not found or you don't have permission to delete it.";
-                    return RedirectToAction(nameof(Index));
-                }
-
-                // Remove the UserMovie association
-                _context.UserMovies.Remove(userMovie);
-
-                // Check if this movie is used by other users
-                var otherUsersHaveThisMovie = await _context.UserMovies
-                    .AnyAsync(um => um.MovieId == id && um.UserId != userId);
-
-                if (!otherUsersHaveThisMovie)
-                {
-                    // If no other users have this movie, delete the movie itself
-                    var movie = await _context.Movies.FindAsync(id);
-                    if (movie != null)
-                    {
-                        _context.Movies.Remove(movie);
-                    }
-                }
-
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Movie successfully deleted.";
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "An error occurred while deleting the movie.";
+                // Delete the movie from the database.
+                _context.Movies.Remove(movie);
             }
 
+            await _context.SaveChangesAsync(); // Commit the changes to the database.
             return RedirectToAction(nameof(Index));
         }
 
-                // Checks if a movie exists in the database by its ID.
-                private bool MovieExists(int id)
-                {
-                    return _context.Movies.Any(e => e.MovieId == id);
-                }
+        // Checks if a movie exists in the database by its ID.
+        private bool MovieExists(int id)
+        {
+            return _context.Movies.Any(e => e.MovieId == id);
+        }
     }
 }
