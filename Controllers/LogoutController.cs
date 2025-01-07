@@ -1,35 +1,51 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MovieCatalog.Models;
 using System.Threading.Tasks;
 
-namespace MovieCatalog.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class LogoutController : ControllerBase
+namespace MovieCatalog.Controllers
 {
-    private readonly SignInManager<MyUser> _signInManager;
-
-    // Constructor: Injects the SignInManager, which manages user authentication actions.
-    public LogoutController(SignInManager<MyUser> signInManager)
+    public class LogoutController : Controller
     {
-        _signInManager = signInManager;
-    }
+        private readonly SignInManager<MyUser> _signInManager;
+        private readonly ILogger<LogoutController> _logger;
 
-    // POST: api/logout
-    // Logs out the currently authenticated user and ends their session.
-    [HttpPost]
-    public async Task<IActionResult> Index()
-    {
-        // Signs the user out of their current session.
-        await _signInManager.SignOutAsync();
+        public LogoutController(SignInManager<MyUser> signInManager, ILogger<LogoutController> logger)
+        {
+            _signInManager = signInManager;
+            _logger = logger;
+        }
 
-        // Returns a confirmation message after logging out.
-         return RedirectToAction("Index", "Home");
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+        // API endpoint for programmatic logout
+        [HttpPost("api/logout")]
+        public async Task<IActionResult> ApiLogout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out via API.");
+            return Ok(new { message = "Logged out successfully" });
+        }
     }
 }
-
-
-
-
