@@ -84,7 +84,7 @@ namespace MovieCatalog.Controllers
         // POST: Movies/Create
         // Handles the form submission for creating a new movie.
         [HttpPost]
-        [ValidateAntiForgeryToken] // Helps prevent cross-site request forgery attacks.
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieId,Title,Genre,Director,Rating")] Movie movie)
         {
             if (ModelState.IsValid) // Checks if the form input is valid.

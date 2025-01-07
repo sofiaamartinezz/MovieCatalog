@@ -1,22 +1,169 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* Reset and base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 60px; /* For fixed navbar */
 }
+
+/* Layout Components */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.page-content {
+  flex: 1 0 auto;
+}
+
+/* Navigation */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* Footer */
+.footer {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  margin-top: auto;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('/api/placeholder/1920/1080');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 0;
+  margin-bottom: 40px;
+}
+
+/* Feature Cards */
+.feature-card {
+  border: none;
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #0056b3;
+}
+
+/* Call to Action Section */
+.cta-section {
+  background-color: #f8f9fa;
+  padding: 60px 0;
+  margin-top: 40px;
+}
+
+/* Buttons */
+.btn-get-started {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  background-color: #0056b3;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-get-started:hover {
+  background-color: #003d7a;
+  transform: scale(1.05);
+}
+
+/* Login/Register Pages */
+.login-container {
+  min-height: calc(100vh - 60px); /* Adjusted for fixed navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('/api/placeholder/1920/1080');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-box {
+  max-width: 450px;
+}
+
+/* Form Styles */
+.form-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-label::after {
+  content: "*";
+  color: #dc3545;
+  margin-left: 4px;
+  font-size: 0.875rem;
+}
+
+.form-control {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
+}
+
+/* Validation Styles */
+.validation-message,
+.field-validation-error {
+  display: block;
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 5px;
+}
+
+/* Links in login/register boxes */
+.login-box a {
+  color: #0056b3;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-box a:hover {
+  color: #003d7a;
+  text-decoration: underline;
+}
+

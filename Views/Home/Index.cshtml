@@ -1,8 +1,79 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Movie Catalog";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="page-content">
+    <!-- Hero Section -->
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 mb-4">Welcome to Movie Catalog</h1>
+            <p class="lead mb-4">Track, rate, and share your movie experiences all in one place</p>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Movies/Index'">Go to My Movies</button>
+            }
+            else
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Get Started</button>
+            }
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <div class="feature-icon">📝</div>
+                        <h3 class="card-title">Track Movies</h3>
+                        <p class="card-text">Keep a personal record of all the movies you've watched</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <div class="feature-icon">⭐</div>
+                        <h3 class="card-title">Rate & Review</h3>
+                        <p class="card-text">Share your thoughts and rate movies on a five-star scale</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card text-center p-4">
+                    <div class="card-body">
+                        <div class="feature-icon">💬</div>
+                        <h3 class="card-title">Discuss</h3>
+                        <p class="card-text">Join discussions and share opinions with other movie enthusiasts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="cta-section text-center">
+        <div class="container">
+            <h2 class="mb-4">Ready to Start Your Movie Journey?</h2>
+            <p class="lead mb-4">Join our community of movie lovers today and start tracking your favorite films.</p>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Movies/Index'">Go to My Movies</button>
+            }
+            else
+            {
+                <button class="btn btn-primary btn-get-started" onclick="window.location.href='/Account/Register'">Create Account</button>
+                <p class="text-muted mt-3">Already have an account? <a href="/Account/Login">Log in</a></p>
+            }
+        </div>
+    </div>
+
+        <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2025 Movie Catalog. All rights reserved.</p>
+        </div>
+    </footer>
+
 </div>

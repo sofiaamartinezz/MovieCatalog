@@ -34,11 +34,13 @@ Information Systems Project
 Here are a few screenshots showing the interface of the web application:
 
 1. **Home Page**  
-
-    ![Home Page](images/landing_page.png)  
+    ![Home Page](images/landing_page.png) 
+    
+    _This is the landing page when the user is not logged in_
 
     ![Home Page](images/landing_page_auth.png)  
-
+    
+    _This is the landing page when the user is  logged in_
 
 2. **Login Screen**  
     ![Login Screen](images/login_page.png)  
@@ -50,7 +52,8 @@ Here are a few screenshots showing the interface of the web application:
     ![Movie List Screen](images/movies_list.png)  
 
 4. **Movie Detail Page**  
-    ![Movie Detail Page](images/details_page.png)  
+    ![Movie Detail Page](images/movie_details.png)  
+
 ---
 
 ## Database Schema  
