@@ -52,7 +52,7 @@ Here are a few screenshots showing the interface of the web application:
     ![Movie List Screen](images/movies_list.png)  
 
 4. **Movie Detail Page**  
-    ![Movie Detail Page](images/movie_details.png)  
+    ![Movie Detail Page](images/details_page.png)  
 
 ---
 
