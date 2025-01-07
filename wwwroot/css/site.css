@@ -1,22 +1,184 @@
-html {
-  font-size: 14px;
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('/api/placeholder/1920/1080');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 0;
+  margin-bottom: 40px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.feature-card {
+  border: none;
+  transition: transform 0.3s ease;
+  margin-bottom: 20px;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.feature-card:hover {
+  transform: translateY(-10px);
 }
 
-html {
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #0056b3;
+}
+
+/* Call to Action Section */
+.cta-section {
+  background-color: #f8f9fa;
+  padding: 60px 0;
+  margin-top: 40px;
+}
+
+.btn-get-started {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  background-color: #0056b3;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-get-started:hover {
+  background-color: #003d7a;
+  transform: scale(1.05);
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('/api/placeholder/1920/1080');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-box h2 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
+}
+
+.login-box a {
+  color: #0056b3;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-box a:hover {
+  color: #003d7a;
+  text-decoration: underline;
+}
+
+/* Add these additional styles to your site.css file */
+
+.register-box {
+  max-width: 450px;
+}
+
+.validation-message {
+  display: block;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+.form-group {
   position: relative;
-  min-height: 100%;
+}
+
+/* Password strength indicators (optional visual enhancement) */
+.form-control:focus + .password-strength {
+  display: block;
+}
+
+/* Custom styling for validation messages */
+.field-validation-error {
+  font-size: 0.875rem;
+  color: #dc3545;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Add a subtle indicator for required fields */
+.form-label::after {
+  content: "*";
+  color: #dc3545;
+  margin-left: 4px;
+  font-size: 0.875rem;
+}
+
+/* Reset and base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+/* Main content */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.page-content {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  margin-top: auto;
+  border-top: 1px solid #dee2e6;
+}
+
+/* If you have a fixed navbar, add this to prevent content from hiding behind it */
+main {
+  margin-top: 60px; /* Adjust this value based on your navbar height */
+}
+
+/* For pages with minimal content, ensure they still fill the viewport */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+

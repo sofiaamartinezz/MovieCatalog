@@ -51,8 +51,8 @@ namespace MovieCatalog.Controllers
 
             if (result.Succeeded)
             {
-                // If successful, redirect the user
-                return LocalRedirect(returnUrl);
+                // If successful, redirect the user to the Privacy page
+                return RedirectToAction("Privacy", "Home"); // Redirige a la página Privacy
             }
 
             // If there were errors, show them in the view
